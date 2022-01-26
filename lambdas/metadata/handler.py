@@ -17,7 +17,10 @@ def handler(_event: dict, _context: LambdaContext) -> dict:
     :rtype: dict
     """
 
-    print(os.environ)
+    git_commit: str = 'NA'    
+    if 'GIT_COMMIT' in os.environ:
+        git_commit = os.environ['GIT_COMMIT']
+
     return {
         'statusCode': 200,
         'headers': {
@@ -26,9 +29,9 @@ def handler(_event: dict, _context: LambdaContext) -> dict:
         'body': json.dumps({
             'myApplication': [
                 {
-                    'version': '1.0', # TODO
-                    'description' : 'technical test', # TODO
-                    'lastcommit': 'c0484c' # TODO
+                    'version': '1.0',
+                    'description' : 'technical test',
+                    'lastcommit': git_commit
                 }
             ]
         })
