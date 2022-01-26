@@ -26,7 +26,7 @@ class LambdaLayerStack(Stack):
 
         commands: List[str] = [
             f"echo '{data}' > requirements.txt",
-            'pip install -r requirements.txt -t /asset-output',
+            'pip install -r requirements.txt -t /asset-output/python',
             'cp -au . /asset-output'
         ]
 

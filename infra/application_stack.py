@@ -3,6 +3,7 @@ from aws_cdk import (
     Duration,
     Stack,
     aws_lambda as _lambda,
+    aws_ssm as _ssm,
     aws_apigateway as apigateway
 )
 from constructs import Construct
@@ -21,6 +22,20 @@ class ApplicationStack(Stack):
         if not git_commit:
             git_commit = "None"
 
+        # Build up lambda layer (for packages)
+        layer_param_name: str = f"/{application_name}/venvLayer"
+
+        layer_arn: str = _ssm.StringParameter.value_for_string_parameter(
+            self,
+            layer_param_name
+        )
+
+        lambda_layer = _lambda.LayerVersion.from_layer_version_arn(
+            self,
+            "BaseLayerFromArn",
+            layer_arn
+        )
+
         # Simple root endpoint
         base_handler = _lambda.Function(
             self,
@@ -29,7 +44,10 @@ class ApplicationStack(Stack):
             handler='base.handler.handler',
             runtime=_lambda.Runtime.PYTHON_3_8,
             code=_lambda.Code.from_asset('lambdas'),
-            timeout=Duration.seconds(30)
+            timeout=Duration.seconds(30),
+            layers=[
+                lambda_layer
+            ]
         )
 
         api = apigateway.LambdaRestApi(
@@ -53,7 +71,10 @@ class ApplicationStack(Stack):
             handler='health.handler.handler',
             runtime=_lambda.Runtime.PYTHON_3_8,
             code=_lambda.Code.from_asset('lambdas'),
-            timeout=Duration.seconds(30)
+            timeout=Duration.seconds(30),
+            layers=[
+                lambda_layer
+            ]
         )
 
         health_endpoint = base_url.add_resource('health')
@@ -76,7 +97,10 @@ class ApplicationStack(Stack):
             timeout=Duration.seconds(30),
             environment={
                 'GIT_COMMIT': git_commit
-            }
+            },
+            layers=[
+                lambda_layer
+            ]
         )
 
         metadata_endpoint = base_url.add_resource('metadata')
