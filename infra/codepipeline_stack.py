@@ -28,7 +28,7 @@ class CodePipelineStack(Stack):
 
         # Declare Pipeline Source
         code_source = CodePipelineSource.git_hub(
-            repo_string="benmcp/aws-sam-boilerplate",
+            repo_string="benmcp/sample-cdk-app",
             branch='main',
             authentication=SecretValue.secrets_manager('github-token')
         )
