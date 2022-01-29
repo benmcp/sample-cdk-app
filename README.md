@@ -17,9 +17,9 @@ Below is made up of the following sections:
 * [Risks associated with this solution](#risks-associated-with-this-solution)
 
 This creates the following URLs:
-* [Basic API Endpoint](https://lir5kk65gg.execute-api.ap-southeast-2.amazonaws.com/prod/v1/)
-* [Metadata API Endpoint](https://lir5kk65gg.execute-api.ap-southeast-2.amazonaws.com/prod/v1/metadata)
-* [Health Endpoint](https://lir5kk65gg.execute-api.ap-southeast-2.amazonaws.com/prod/v1/health)
+* [Basic API Endpoint](https://39jxidap25.execute-api.ap-southeast-2.amazonaws.com/prod/v1/)
+* [Metadata API Endpoint](https://39jxidap25.execute-api.ap-southeast-2.amazonaws.com/prod/v1/metadata)
+* [Health Endpoint](https://39jxidap25.execute-api.ap-southeast-2.amazonaws.com/prod/v1/health)
 
 ## Getting Started
 
