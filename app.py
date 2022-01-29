@@ -3,7 +3,6 @@ import os
 
 import aws_cdk as cdk
 
-from infra.lambda_layer_stack import LambdaLayerStack
 from infra.codepipeline_stack import CodePipelineStack
 from dotenv import load_dotenv
 
@@ -17,11 +16,6 @@ CodePipelineStack(
     app,
     f'{application_name}-CodePipelineStack'
 )
-
-# LambdaLayerStack(
-#     app,
-#     f'{application_name}-LambdaLayer'
-# )
 
 app.synth()
 

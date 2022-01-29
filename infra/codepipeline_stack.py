@@ -15,6 +15,8 @@ from constructs import Construct
 from dotenv import load_dotenv
 
 from .application_stage import ApplicationStage
+from .lambda_layer_stage import LambdaLayerStage
+
 
 load_dotenv()
 
@@ -26,7 +28,7 @@ class CodePipelineStack(Stack):
 
         # Declare Pipeline Source
         code_source = CodePipelineSource.git_hub(
-            repo_string="benmcp/sample-cdk-app",
+            repo_string="benmcp/aws-sam-boilerplate",
             branch='main',
             authentication=SecretValue.secrets_manager('github-token')
         )
@@ -53,6 +55,7 @@ class CodePipelineStack(Stack):
                     }
                 )
             ),
+            docker_enabled_for_synth=True,
             synth=ShellStep(
                 f'{application_name}-synth',
                 input=code_source,
@@ -62,16 +65,26 @@ class CodePipelineStack(Stack):
                     'python3 -m venv .venv',
                     'source .venv/bin/activate',
                     'pip3 install -r requirements.txt',
-                    f'cdk synth {application_name}-CodePipelineStack'
+                    f'cdk synth {application_name}-CodePipelineStack',
+                    'ls -la'
                 ],
                 primary_output_directory='cdk.out'
             )
         )
 
+        layer_stack = LambdaLayerStage(
+            self,
+            'LambdaStage'
+        )
+
+        pipeline.add_stage(
+            layer_stack
+        )
+
         # Declare Pipeline Deployment
         app_stack = ApplicationStage(
             self,
-            'Stage'
+            'AppStage'
         )
 
         pipeline.add_stage(app_stack)

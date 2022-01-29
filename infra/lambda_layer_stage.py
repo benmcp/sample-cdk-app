@@ -8,17 +8,17 @@ from aws_cdk import (
 from constructs import Construct
 from dotenv import load_dotenv
 
-from .application_stack import ApplicationStack
+from .lambda_layer_stack import LambdaLayerStack
 
 load_dotenv()
 
-class ApplicationStage(Stage):
+class LambdaLayerStage(Stage):
     def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
         super().__init__(scope, construct_id, **kwargs)
 
         application_name: str = os.getenv('APPLICATION')
 
-        ApplicationStack(
+        LambdaLayerStack(
             self,
-            f'{application_name}-ApplicationStack'
+            f'{application_name}-LambdaLayer'
         )
