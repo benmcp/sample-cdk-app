@@ -1,7 +1,7 @@
 """Base API Pytest"""
 from lambdas.base.handler import handler
 
-def test_health():
+def test_base():
     """Test Base Endpoint
     """
     try:

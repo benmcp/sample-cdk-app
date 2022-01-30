@@ -1,8 +1,8 @@
 """Metadata API Pytest"""
 from lambdas.metadata.handler import handler
 
-def test_health():
-    """Test Health Endpoint
+def test_metadata():
+    """Test Metadata Endpoint
     """
     try:
         reaponse = handler({}, {})
